@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+
+<body class="container">
+    <h1>Enter an Event You Would Like to Create:</h1>
+
+
+<!--    TODO: we are going to replace the input boxes names to match the field names of the event object (name & description)
+                This will allow Spring to find the fields. Otherwise Spring wont know how to assign the properties when an event is created
+                If a form field name does NOT match up with a model field, then binding will fail for that piece of data. It is critically important to ensure these names match up.-->
+    <nav th:replace="fragments :: navigation"></nav>
+        <form method="POST" >
+            <div class="form-group">
+                <label> Event Name
+                    <input type="text" name="name" class="form-control">
+                </label>
+                <label> Description
+                    <input type="text" name="description" class="form-control">
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create Event" class="btn btn-success">
+            </div>
+        </form>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="fragments :: head"></head>
+
+<!--Everytime we make a <body> element we must put container on it-->
+<body class="container">
+    <h1> All the Events to Watch for!</h1>
+
+    <nav th:replace="fragments :: navigation"></nav>
+
+<!--    This is an unless, which means that code will execute if it returns false-->
+<!--    BREAKDOWN: Is there something called events? Do I have a non-null variable called events? If so,-->
+<!--                let me make sure there are things inside of that variable... So if we don't have an events variable-->
+<!--                and there is nothing inside... then display "No Events Yet!"-->
+    <p th:unless="${events} and ${events.size()}" >No Events Yet!</p>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Event Name</th>
+                    <th>Event Description</th>
+                    <th>Event Location</th>
+                </tr>
+            </thead>
+<!--            <tr th:each="event : ${events}">-->
+<!--                <td th:text="${event.key}"></td>-->
+<!--                <th:block th:each="value : ${event.value}" >-->
+<!--                <td th:text="${value}"></td>-->
+<!--                </th:block>-->
+<!--                <td th:fragment="fragment.address">123456 Coder Dr. STL</td>-->
+<!--            </tr>-->
+
+
+<!--            TODO:We now are using an ArrayList of Event Objects, so we are going to access info through their fields (name & description)
+                     The syntax event.fieldName runs a getter method behind the scenes in order to access a field-->
+            <tr th:each="event : ${events}">
+                <td th:text="${event.id}"></td>
+                <td th:text="${event.name}"></td>
+                <td th:text="${event.description}"></td>
+                <td>
+                    <a th:href="@{/events/edit/{id}(id=${event.id})}">Edit</a>
+                </td>
+                <td th:fragment="fragment.address">123456 Coder Dr STL</td>
+            </tr>
+        </table>
+
+</body>
+</html>
+
+
+<!--What wrapping in a block looks like. Used before we created the table-->
+<!--<th:block th:each="event : ${events}">-->
+<!--    <li th:text="${event}"></li>-->
+<!--</th:block>
+
+But now we have the block as a tr and it is wrapping the td
+Now the tr will repeat for every event in our events collection
+
+
+
+HOW THE LOOPING IS WORKING:
+            <tr th:each="event : ${events}">
+                <td th:text="${event.key}"></td>
+
+                <th:block th:each="value : ${event.value}" >
+                <td th:text="${value}"></td>
+                </th:block>
+                <td th:fragment="fragment.address">123456 Coder Dr. STL</td>
+            </tr>
+
+<tr th:each="event : ${events}">                    :::   for each event in the events HashMap. "events" is just wrapped in a variable expression ${}      <--- the loop is in the <tr> because we want multiple rows for each event
+                                                          So it is saying that it was a table row for every event that is in the events HashMap
+
+<td th:text="${event.key}"></td>                    :::  display the key of the event as text on the page. "event.key" is wrapped in a variable expression ${}
+
+<th:block th:each="value : ${event.value}">         ::: a nested loop wrapped in a block. for each value of an event's value (event.value)
+
+<td th:text="${value}></td>                         ::: display the value of the event as text on the page. "value" is wrapped in a variable expression ${}
+
+
+
+NOTE: if the nested loop would have said: value : ${event}, then we would have gotten this as a result:
+Code With Pride  	Code With Pride=A fun meetup sponsored by LaunchCode
+
+By making it event.value, we could print just the value, without the key, for the description.
+-->
